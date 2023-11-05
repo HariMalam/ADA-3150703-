@@ -12,7 +12,7 @@ public class RabinKarp {
         int textLength = text.length();
         int patternLength = pattern.length();
         int patternHash = hash(pattern, patternLength);
-        int textHash = hash(text, patternLength);
+        int textHash = hash(text.substring(0, patternLength), patternLength);
 
         for (int i = 0; i <= textLength - patternLength; i++) {
             if (patternHash == textHash) {
@@ -26,7 +26,7 @@ public class RabinKarp {
             }
 
             if (i < textLength - patternLength) {
-                textHash = recalculateHash(text, textHash, i, i + patternLength, patternLength);
+                textHash = recalculateHash(text, textHash, i, i + patternLength);
             }
         }
     }
@@ -39,9 +39,9 @@ public class RabinKarp {
         return hash;
     }
 
-    public static int recalculateHash(String str, int oldHash, int oldIndex, int newIndex, int patternLength) {
-        int newHash = (oldHash - str.charAt(oldIndex) * (int) Math.pow(PRIME, patternLength - 1)) % PRIME;
-        newHash = (newHash * PRIME + str.charAt(newIndex)) % PRIME;
+    public static int recalculateHash(String text, int oldHash, int oldIndex, int newIndex) {
+        int newHash = (oldHash - text.charAt(oldIndex) * (int) Math.pow(PRIME, 0)) % PRIME;
+        newHash = (newHash * PRIME + text.charAt(newIndex)) % PRIME;
         return (newHash < 0) ? newHash + PRIME : newHash;
     }
 }
